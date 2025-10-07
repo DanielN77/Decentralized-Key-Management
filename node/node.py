@@ -13,7 +13,7 @@ def init():
 @app.route('/store', methods=['POST'])
 def store_shard():
     # Get all url parameters
-    username = request.args.get('username')      
+    username = request.args.get('username')
     x = request.args.get('x', type=int) 
     y = request.args.get('y', type=int)
     
