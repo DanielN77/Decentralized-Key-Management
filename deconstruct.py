@@ -1,7 +1,9 @@
 import numpy as np
 
-def deconstruct(s, n, t):
-    p = 2**35 + 53
+def deconstruct(pwd, n, t):  # pwd is assumed to be sent as bytes
+    s = int.from_bytes(pwd, byteorder="big")  # Convert bytes to an integer
+
+    p = 2**256 + 297 # Prime guaranteed larger than s since pwd is 32 bytes (256 bits) fixed length for Argon2id
     coef = [np.random.randint(low=1, high=p) for _ in range(t-1)]
 
     # Polynomial
@@ -14,13 +16,13 @@ def deconstruct(s, n, t):
         y = f(x)
         shards.add((x, y))
 
-    return shards
+    return shards  # Set with n shards
 
 
 # https://medium.com/@compuxela/horners-method-for-polynomial-evaluation-a13dbf9749a2
 def construct_poly(coef, s, p):
 
-    coef.append(s)  # Adds s as last coefficient
+    coef = coef + [s]  # Adds s as last coefficient
 
     # Function f(x) with Horner's method
     def f(x):  
@@ -32,6 +34,3 @@ def construct_poly(coef, s, p):
     
     return f
 
-
-nodes = deconstruct(205, 5, 3)
-print(nodes)

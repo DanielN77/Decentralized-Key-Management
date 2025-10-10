@@ -1,7 +1,7 @@
 import numpy as np
 
-def reconstruct(shards):
-    p = 2**35 + 53
+def reconstruct(shards):  # Set with shards (x, f(x))
+    p = 2**256 + 297
 
     nodes = [x for x, _ in shards]  
     vals  = [y for _, y in shards]
@@ -9,16 +9,18 @@ def reconstruct(shards):
 
     # Lagrange polynomial
     def L(x):
-        sum = 0
+        full = 0
         for j in range(len(nodes)):
             l_j = construct_lagrange(nodes[j], nodes, p, j)
 
-            sum += vals[j]*l_j(x)
-        return sum
+            full = (full + vals[j] * l_j(x)) % p
+        return full
     
 
     s = L(0) % p
-    return s
+
+    pwd = s.to_bytes(32, byteorder="big")
+    return pwd  # Returned as bytes
 
 def construct_lagrange(x_j, nodes, p, j):
 
@@ -34,12 +36,9 @@ def construct_lagrange(x_j, nodes, p, j):
 
             nom = (x-x_m) % p
             denom = (x_j - x_m) % p
-            product *= nom * pow(denom, -1, p)  # Modular inverse mod p insteaad of division
+            product = (product * nom * pow(denom, -1, p)) % p  # Modular inverse mod p insteaad of division
+
         return product
     
     return l_j
 
-
-# Commands
-s = reconstruct({(3, 22130049540), (2, 25036170937), (1, 6206241685), (4, 31847615915), (5, 19829131641)})
-print(s)
