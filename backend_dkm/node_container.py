@@ -9,7 +9,7 @@ def create_node_containers(n):
 def get_node_ips():
     containers = docker.from_env().containers.list()
     nodes = [ c for c in containers if "decentralized-key-management-node" in c.name ]
-    node_ips = [ c.attrs['NetworkSettings']['Networks']['keynet']['IPAddress'] for c in nodes ]
+    node_ips = [ c.attrs['NetworkSettings']['Networks']['decentralized-key-management_keynet']['IPAddress'] for c in nodes ]
     return node_ips
 
 if __name__ == "__main__":

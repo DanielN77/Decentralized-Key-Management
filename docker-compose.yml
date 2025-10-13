@@ -1,12 +1,12 @@
 services: 
-  # backend_dkm:
-  #   build: ./backend_dkm
-  #   ports:
-  #   - "5000:5000" # Internal port to host port
-  #   networks:
-  #   - keynet
-  #   depends_on:
-  #   - node
+  backend_dkm:
+    build: ./backend_dkm
+    ports:
+    - "5000:5000" # Internal port to host port
+    networks:
+    - keynet
+    depends_on:
+    - node
 
   node:
     build: ./node

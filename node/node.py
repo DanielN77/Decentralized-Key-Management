@@ -12,10 +12,11 @@ def init():
 # Save shard (x, y) for that user
 @app.route('/store', methods=['POST'])
 def store_shard():
+    print("welcome")
     # Get all url parameters
     username = request.args.get('username')
-    x = request.args.get('x', type=int) 
-    y = request.args.get('y', type=int)
+    x = request.args.get('x', type=float) 
+    y = request.args.get('y', type=float)
     
     # Missing parameters
     if username is None or x is None or y is None:
