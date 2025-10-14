@@ -1,11 +1,18 @@
 import numpy as np
+import secrets
 
 def deconstruct(pwd, n, t):  # pwd is assumed to be sent as bytes
+    # Felkontroller
+    if not isinstance(pwd, (bytes, bytearray)):
+        raise TypeError("pwd måste vara bytes")
+    if len(pwd) != 32:
+        raise ValueError("pwd måste vara exakt 32 bytes")
+
+
     s = int.from_bytes(pwd, byteorder="big")  # Convert bytes to an integer
 
     p = 2**256 + 297 # Prime guaranteed larger than s since pwd is 32 bytes (256 bits) fixed length for Argon2id
-    coef = [np.random.randint(low=1, high=p) for _ in range(t-1)]
-
+    coef = [secrets.randbelow(p - 1) + 1 for _ in range(t - 1)]
     # Polynomial
     f = construct_poly(coef, s, p)
 
