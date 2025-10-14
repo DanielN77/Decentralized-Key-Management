@@ -40,4 +40,3 @@ def construct_poly(coef, s, p):
         return r
     
     return f
-
