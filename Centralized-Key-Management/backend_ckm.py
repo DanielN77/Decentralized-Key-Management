@@ -48,7 +48,7 @@ def register():
     password = data.get("password", "")
     users = load_users()
 
-    # Both paramters are neeed
+    # Both paramters are needed
     if not username or not password:
         return {"message": "Username and password are both required."}
     if username in users:
